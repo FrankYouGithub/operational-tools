@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 const fs = require("fs");              //操作文件，读写文件
 const path = require('path');
-const https = require("https");        //网络请求
 const cheerio = require("cheerio");    //扩展模块
 const axios = require('axios');
 const nodeXlsx = require('node-xlsx')	 //引用node-xlsx模块
 const { fsExistsSync, getSuffix, copyWithStream, printHelp, readDir, outputHtml, similar, formatDate } = require('./util');
 const { getMPData } = require('./src/mp-data');
 const { getTPData } = require('./src/tp-data');
+const { getPAData } = require('./src/pa-data');
 
 axios.defaults.withCredentials = true
 const pwd = process.cwd(); // 当前执行程序的路径 同 path.resolve('./')
@@ -339,13 +339,9 @@ switch (mode) {
     console.log('开始获取影视包运营数据......')
     getMPData();
     break;
-  case 'copyright':
-  // console.log('开始获取小猪版权......')
-  // getXiaozhuCopyright();
-  // break;
-  case 'removed':
-    // console.log('开始获取小猪已下架版权......')
-    // getXiaozhuRemovedCopyright();
+  case 'pa': // 拉取母账号数据
+    console.log('开始获取母账号数据..........')
+    getPAData()
     break;
   default:
     printHelp()
