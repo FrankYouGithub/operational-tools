@@ -1,7 +1,7 @@
 /*
  * @Author       : frank
  * @Date         : 2022-08-28 21:03:36
- * @LastEditTime : 2022-10-22 15:23:28
+ * @LastEditTime : 2022-11-30 16:37:05
  * @LastEditors  : frank
  * @Description  : In User Settings Edit
  */
@@ -154,6 +154,19 @@ const outputJSON = (data) => {
   });
 }
 
+const saveLocalJSON = (path, data) => {
+  fs.writeFile(`${path}`, JSON.stringify(data), error => {
+    if (error) {
+      console.log(error);
+    }
+  });
+}
+
+const getLocalJSON = (path) => {
+  const data = fs.readFileSync(path);
+  return JSON.parse(data)
+}
+
 /**
  * 相似度对比
  * @param s 文本1
@@ -247,5 +260,7 @@ module.exports = {
   similar,
   formatDate,
   outputJSON,
-  sortDateData
+  sortDateData,
+  saveLocalJSON,
+  getLocalJSON
 }
