@@ -8,6 +8,7 @@ const { fsExistsSync, getSuffix, copyWithStream, printHelp, readDir, outputHtml,
 const { getMPData } = require('./src/mp-data');
 const { getTPData } = require('./src/tp-data');
 const { getPAData } = require('./src/pa-data');
+const { getFileName } = require('./src/get-title');
 
 axios.defaults.withCredentials = true
 const pwd = process.cwd(); // 当前执行程序的路径 同 path.resolve('./')
@@ -342,6 +343,10 @@ switch (mode) {
   case 'pa': // 拉取母账号数据
     console.log('开始获取母账号数据..........')
     getPAData()
+    break;
+  case 'title':
+    console.log('开始获取标题..........')
+    getFileName()
     break;
   default:
     printHelp()
