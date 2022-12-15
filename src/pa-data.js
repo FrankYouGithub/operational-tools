@@ -1,7 +1,7 @@
 /*
  * @Author       : frank
  * @Date         : 2022-10-05 22:11:48
- * @LastEditTime : 2022-11-30 20:12:30
+ * @LastEditTime : 2022-12-15 21:42:30
  * @LastEditors  : frank
  * @Description  : In User Settings Edit
  */
@@ -27,10 +27,12 @@ const JSON_PATH = path.join(__dirname, 'data')
 const getDatas = () => {
   const account = nodeXlsx.parse(path.join(pwd, 'account.xlsx'))[0].data	//读取excel表格
   account.forEach(item => {
-    PAccount.push({
-      account: item[0],
-      password: item[1]
-    })
+    if (item[0] && item[1]) {
+      PAccount.push({
+        account: item[0],
+        password: item[1]
+      })
+    }
   })
 }
 // 获取token

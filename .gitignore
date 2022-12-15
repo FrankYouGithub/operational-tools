@@ -69,3 +69,4 @@ typings/
 *.sln
 dist
 /src/pages/baodao
+/src/data
