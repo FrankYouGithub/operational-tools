@@ -1,11 +1,11 @@
 /*
  * @Author       : frank
  * @Date         : 2022-10-05 22:11:48
- * @LastEditTime : 2022-12-15 21:42:30
+ * @LastEditTime : 2022-12-17 17:17:51
  * @LastEditors  : frank
  * @Description  : In User Settings Edit
  */
-const { formatDate, saveLocalJSON, getLocalJSON, fsExistsSync } = require('../util');
+const { formatDate, saveLocalJSON, getLocalJSON, fsExistsSync, outputJSON } = require('../util');
 const pwd = process.cwd(); // 当前执行程序的路径 同 path.resolve('./')
 const fs = require("fs");              //操作文件，读写文件
 const path = require('path');
@@ -408,6 +408,63 @@ const getContent = async () => {
   })
 }
 
+// 接口请求消息通知
+const fetchMessages = (page) => {
+  console.log(`正在获取消息通知........ ${page}`)
+  return new Promise((resolve, reject) => {
+    axios.post('https://mp.xiaozhuyouban.com/message', {
+      page,
+    }, {
+      headers: {
+        'accept': '*/*',
+        'content-type': 'multipart/form-data',
+        'host': 'mp.xiaozhuyouban.com',
+        "origin": "https://mp.xiaozhuyouban.com",
+        "referer": "https://mp.xiaozhuyouban.com/message",
+        'Cookie': cookie,
+        'X-CSRF-TOKEN': token,
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36",
+        "x-requested-with": "XMLHttpRequest"
+      }
+    }).then(res => {
+      if (res.status === 200 && res.data.code == 0) {
+        const { messages = [] } = res.data.data
+        resolve({ suc: true, messages })
+      } else {
+        resolve({ suc: false })
+        console.log('接口调用失败，请稍后重试。。。。。。。。。。。。')
+      }
+    }).catch(() => {
+      resolve({ suc: false })
+      console.log('接口调用失败，请稍后重试。。。。。。。。。。。。')
+    })
+  })
+}
+// 获取消息通知
+const getMessages = async () => {
+  const date = formatDate(new Date(new Date().getTime() - 24 * 60 * 60 * 1000), 'yyyy-MM-dd')
+  return new Promise((resolve, reject) => {
+    let allMessages = [];
+    let page = 1;
+    const fetch = async () => {
+      const data = await fetchMessages(page);
+      if (data.suc) {
+        const { messages = [] } = data;
+        allMessages = allMessages.concat(messages);
+        page++;
+        if (messages[messages.length - 1].time > date) {
+          fetch();
+        } else {
+          resolve(allMessages)
+        }
+      } else {
+        fetch();
+      }
+    }
+    fetch();
+  })
+}
+
 // 开始获取数据
 const getPAccountData = async () => {
   const curAccount = PAccount[acIndex];
@@ -417,6 +474,7 @@ const getPAccountData = async () => {
   cookie = ck;
   const OrganizationName = await getAccountSetting();
   const amount = await getSettleCenter();
+  const messages = await getMessages();
   const { dates } = await fetchMCNIncome();
   const members = await getMembers();
   const creators = await getIncome();
@@ -450,7 +508,8 @@ const getPAccountData = async () => {
     dates,
     videos,
     ...PAccount[acIndex],
-    members: data.sort((a, b) => a.level - b.level)
+    members: data.sort((a, b) => a.level - b.level),
+    messages
   }
 
   acIndex++
@@ -485,7 +544,7 @@ const getPAccountExcelData = (data) => {
     `${formatDate(new Date(new Date().getTime() - 2 * 24 * 60 * 60 * 1000), 'yyyy-MM-dd')}收益`,
     `${formatDate(new Date(new Date().getTime() - 24 * 60 * 60 * 1000), 'yyyy-MM-dd')}收益`,
     '子账号总数', '今日发布数量',]
-  const result = [first]
+  let result = [first]
   data.forEach(item => {
     result.push([
       item.account,
@@ -502,6 +561,16 @@ const getPAccountExcelData = (data) => {
       item.videos.length
     ])
   })
+
+  // 消息通知数据
+  data.forEach(item => {
+    result = result.concat([[], [], []])
+    result.push([`${item.OrganizationName}-消息通知`])
+    item.messages.forEach(msg => {
+      result.push([msg.time, msg.subject, msg.content])
+    })
+  })
+
   return result
 }
 
