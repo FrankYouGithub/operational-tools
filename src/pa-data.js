@@ -1,7 +1,7 @@
 /*
  * @Author       : frank
  * @Date         : 2022-10-05 22:11:48
- * @LastEditTime : 2022-12-17 17:17:51
+ * @LastEditTime : 2022-12-17 17:27:22
  * @LastEditors  : frank
  * @Description  : In User Settings Edit
  */
@@ -543,7 +543,7 @@ const getPAccountExcelData = (data) => {
     `${formatDate(new Date(new Date().getTime() - 3 * 24 * 60 * 60 * 1000), 'yyyy-MM-dd')}收益`,
     `${formatDate(new Date(new Date().getTime() - 2 * 24 * 60 * 60 * 1000), 'yyyy-MM-dd')}收益`,
     `${formatDate(new Date(new Date().getTime() - 24 * 60 * 60 * 1000), 'yyyy-MM-dd')}收益`,
-    '子账号总数', '今日发布数量',]
+    '子账号总数', '今日发布数量', '昨日单包平均收益']
   let result = [first]
   data.forEach(item => {
     result.push([
@@ -558,7 +558,8 @@ const getPAccountExcelData = (data) => {
       item.dates[5].money,
       item.dates[6].money,
       item.members.length,
-      item.videos.length
+      item.videos.length,
+      Number(Number(item.dates[6].money) / (item.members.length / 30).toFixed(2)),
     ])
   })
 
