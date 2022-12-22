@@ -1,7 +1,7 @@
 /*
  * @Author       : frank
  * @Date         : 2022-10-05 22:11:48
- * @LastEditTime : 2022-12-17 17:27:22
+ * @LastEditTime : 2022-12-22 21:11:26
  * @LastEditors  : frank
  * @Description  : In User Settings Edit
  */
@@ -521,16 +521,70 @@ const getPAccountData = async () => {
 }
 
 const getExcalData = (data) => {
-  const result = [['账号', '子账号名称', '等级', '昨收', '昨天热度']]
-  data.members.forEach(item => {
-    result.push([
-      item.mobile,
-      item.name,
-      item.w,
-      item.money,
-      item.views
-    ])
+  const result = [['账号', '子账号名称', '等级', '昨收', '昨天热度', '', '', '', '', '', '', '等级', '总收益', '子账户总数', '平均收益']]
+  let v1 = [], v2 = [], v5 = [];
+  v1 = data.members.filter(v => v.level == 1)
+  amountV1 = v1.reduce((sum, e) => sum + Number(e.money || 0), 0)
+  v2 = data.members.filter(v => v.level == 2)
+  amountV2 = v2.reduce((sum, e) => sum + Number(e.money || 0), 0)
+  v5 = data.members.filter(v => v.level == 5)
+  amountV5 = v5.reduce((sum, e) => sum + Number(e.money || 0), 0)
+  data.members.forEach((item, index) => {
+    switch (index) {
+      case 0:
+        result.push([
+          item.mobile,
+          item.name,
+          item.w,
+          Number(item.money),
+          item.views,
+          '', '', '', '', '', '',
+          'Lv.1',
+          amountV1,
+          v1.length,
+          Number(amountV1 / v1.length).toFixed(2)
+        ])
+        break;
+      case 1:
+        result.push([
+          item.mobile,
+          item.name,
+          item.w,
+          Number(item.money),
+          item.views,
+          '', '', '', '', '', '',
+          'Lv.2',
+          amountV2,
+          v2.length,
+          Number(amountV2 / v2.length).toFixed(2)
+        ])
+        break;
+      case 2:
+        result.push([
+          item.mobile,
+          item.name,
+          item.w,
+          Number(item.money),
+          item.views,
+          '', '', '', '', '', '',
+          'Lv.5',
+          amountV5,
+          v5.length,
+          Number(amountV5 / v5.length).toFixed(2)
+        ])
+        break;
+      default:
+        result.push([
+          item.mobile,
+          item.name,
+          item.w,
+          Number(item.money),
+          item.views
+        ])
+        break;
+    }
   })
+
   return result
 }
 
@@ -549,16 +603,16 @@ const getPAccountExcelData = (data) => {
     result.push([
       item.account,
       item.OrganizationName,
-      item.amount,
-      item.dates[0].money,
-      item.dates[1].money,
-      item.dates[2].money,
-      item.dates[3].money,
-      item.dates[4].money,
-      item.dates[5].money,
-      item.dates[6].money,
-      item.members.length,
-      item.videos.length,
+      Number(item.amount),
+      Number(item.dates[0].money),
+      Number(item.dates[1].money),
+      Number(item.dates[2].money),
+      Number(item.dates[3].money),
+      Number(item.dates[4].money),
+      Number(item.dates[5].money),
+      Number(item.dates[6].money),
+      Number(item.members.length),
+      Number(item.videos.length),
       Number(Number(item.dates[6].money) / (item.members.length / 30).toFixed(2)),
     ])
   })
