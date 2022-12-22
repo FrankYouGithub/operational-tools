@@ -1,7 +1,7 @@
 /*
  * @Author       : frank
  * @Date         : 2022-10-05 22:11:48
- * @LastEditTime : 2022-12-22 21:11:26
+ * @LastEditTime : 2022-12-22 21:41:15
  * @LastEditors  : frank
  * @Description  : In User Settings Edit
  */
@@ -603,7 +603,7 @@ const getPAccountExcelData = (data) => {
     result.push([
       item.account,
       item.OrganizationName,
-      Number(item.amount),
+      item.amount,
       Number(item.dates[0].money),
       Number(item.dates[1].money),
       Number(item.dates[2].money),
