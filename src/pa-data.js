@@ -1,7 +1,7 @@
 /*
  * @Author       : frank
  * @Date         : 2022-10-05 22:11:48
- * @LastEditTime : 2022-12-22 21:41:15
+ * @LastEditTime : 2023-01-01 19:20:18
  * @LastEditors  : frank
  * @Description  : In User Settings Edit
  */
@@ -78,6 +78,7 @@ const loginXiaozhu = (mobile = '', password = '') => {
       xsrfToken: token,
       mobile,
       password,
+      agree: 'on',
       'check[captcha_id]': '',
       'check[lot_number]': '',
       'check[pass_token]': '',
