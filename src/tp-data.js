@@ -1,7 +1,7 @@
 /*
  * @Author       : frank
  * @Date         : 2022-10-05 22:11:48
- * @LastEditTime : 2022-10-22 15:47:20
+ * @LastEditTime : 2023-01-17 13:22:44
  * @LastEditors  : frank
  * @Description  : In User Settings Edit
  */
@@ -54,7 +54,7 @@ const getDatas = () => {
     let videos = [];
     for (let i = 0; i < excel.length; i++) {
       const val = excel[i];
-      if (val[0] || i === excel.length - 1) {
+      if (val[0]) {
         if (account) {
           data[account.accountName] = {
             ...account,
@@ -81,6 +81,14 @@ const getDatas = () => {
           category: val[6].split('：')[0]
         })
         publishTimeMap.add(publishTime)
+        if (i === excel.length - 1) {
+          if (account) {
+            data[account.name] = {
+              ...account,
+              videos,
+            }
+          }
+        }
       }
     }
     xlsxDatas.push({
