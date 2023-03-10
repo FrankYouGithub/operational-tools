@@ -9,6 +9,7 @@ const { getMPData } = require('./src/mp-data');
 const { getTPData } = require('./src/tp-data');
 const { getPAData } = require('./src/pa-data');
 const { getFileName } = require('./src/get-title');
+const { deleteVideos } = require('./src/mp-delete');
 
 axios.defaults.withCredentials = true
 const pwd = process.cwd(); // 当前执行程序的路径 同 path.resolve('./')
@@ -347,6 +348,10 @@ switch (mode) {
   case 'title':
     console.log('开始获取标题..........')
     getFileName()
+    break;
+  case 'delete':
+    console.log('开始删除子账号视频......')
+    deleteVideos();
     break;
   default:
     printHelp()
