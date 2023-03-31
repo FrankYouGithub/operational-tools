@@ -10,6 +10,9 @@ const { getTPData } = require('./src/tp-data');
 const { getPAData } = require('./src/pa-data');
 const { getFileName } = require('./src/get-title');
 const { deleteVideos } = require('./src/mp-delete');
+const { reTpFileName } = require('./src/rename');
+const { moveFile } = require('./src/move');
+const { reImageSuffix } = require('./src/resuffix');
 
 axios.defaults.withCredentials = true
 const pwd = process.cwd(); // 当前执行程序的路径 同 path.resolve('./')
@@ -352,6 +355,16 @@ switch (mode) {
   case 'delete':
     console.log('开始删除子账号视频......')
     deleteVideos();
+    break;
+  case 'rename':
+    console.log('开始修改文件名称')
+    reTpFileName();
+    break;
+  case 'move':
+    moveFile()
+    break;
+  case 'resuffix':
+    reImageSuffix();
     break;
   default:
     printHelp()

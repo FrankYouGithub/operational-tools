@@ -1,7 +1,7 @@
 /*
  * @Author       : frank
  * @Date         : 2022-10-05 22:11:48
- * @LastEditTime : 2023-02-14 16:06:26
+ * @LastEditTime : 2023-03-16 15:26:09
  * @LastEditors  : frank
  * @Description  : In User Settings Edit
  */
@@ -203,18 +203,18 @@ const fetchDeleteVideo = (vid) => {
       console.log(res.data)
       setTimeout(() => {
         resolve({ suc: true })
-      }, 10000);
+      }, 15000);
     }).catch(() => {
       resolve({ suc: false })
       console.log('接口调用失败，请稍后重试。。。。。。。。。。。。')
     })
   })
 }
-
+const oldDateVideo = formatDate(new Date(new Date().getTime() - 14 * 24 * 60 * 60 * 1000), 'yyyy-MM-dd');
 const delVideos = async (videos) => {
   let index = 0;
   const fetch = async () => {
-    if (videos[index].time < '2023-01-30') {
+    if (videos[index].time < oldDateVideo) {
       const res = await fetchDeleteVideo(videos[index].vid);
       if (res.suc) {
         if (index == videos.length - 1) {
