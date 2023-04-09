@@ -1,7 +1,7 @@
 /*
  * @Author       : frank
  * @Date         : 2022-08-28 21:03:36
- * @LastEditTime : 2022-11-30 16:37:05
+ * @LastEditTime : 2023-04-09 15:27:37
  * @LastEditors  : frank
  * @Description  : In User Settings Edit
  */
@@ -46,9 +46,17 @@ const copyWithStream = (_src, _dst) => {
 const printHelp = () => {
   console.log('')
   console.log('Usage: check <command>');
-  console.log(`where <command> is one of: "mp", "tp", "help"`);
+  console.log(`where <command> is one of: "mp", "tp", "help" ...`);
   console.log('converter mp               获取影视包数据统计')
   console.log('converter tp               获取体育包数据统计')
+  console.log('converter pa               爬取母账号数据')
+  console.log('converter title            获取当前文件夹下所有.mp4标题')
+  console.log('converter rename           批量替换体育前缀、后缀')
+  console.log('converter move             移动文件到当前目录下')
+  console.log('converter resuffix         把【竖屏封面】替换成2')
+  console.log('converter getchild         根据母账号获取所有子账号和名称')
+  console.log('converter quality          爬取子账号视频质量表')
+  console.log('converter delete           删除子账号14天前所有视频')
 }
 
 const ignoreFiles = ['.git'];
