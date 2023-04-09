@@ -1,7 +1,7 @@
 /*
  * @Author       : frank
  * @Date         : 2022-10-05 22:11:48
- * @LastEditTime : 2023-04-09 15:17:15
+ * @LastEditTime : 2023-04-09 17:13:51
  * @LastEditors  : frank
  * @Description  : In User Settings Edit
  */
@@ -63,7 +63,7 @@ const getCsrfToken = () => {
       }
     }).catch(err => {
       console.log('获取token失败，正在重试......')
-      reject(err)
+      reject(null)
     })
   })
 }
@@ -108,11 +108,11 @@ const loginXiaozhu = (mobile = '', password = '') => {
         resolve(cookie)
         console.log(`账号登陆成功.......`)
       } else {
-        reject('登陆失败')
+        reject(null)
         console.log(`账号登陆失败.......请稍后重试........`)
       }
     }).catch(error => {
-      reject(error)
+      reject(null)
       console.log(`账号登陆失败.......请稍后重试........`)
     })
   })
@@ -120,7 +120,7 @@ const loginXiaozhu = (mobile = '', password = '') => {
 
 // 接口请求今日发布视频
 const fetchContent = (page) => {
-  console.log(`正在获取账号所有发布视频........ ${page}`)
+  console.log(`正在获取账号最近发布视频........ ${page}`)
   const date = formatDate(new Date(new Date().getTime() - 24 * 60 * 60 * 1000), 'yyyy-MM-dd')
   return new Promise((resolve, reject) => {
     axios.post('https://mp.xiaozhuyouban.com/content/manage', {
@@ -169,7 +169,9 @@ const getContent = async () => {
         allVideos = allVideos.concat(videos);
         resolve(allVideos)
       } else {
-        fetch();
+        setTimeout(() => {
+          fetch();
+        }, 10000);
       }
     }
     fetch();
@@ -209,15 +211,25 @@ function outputExcel() {
 const getPAccountData = async () => {
   const curAccount = PAccount[acIndex];
   const tk = await getCsrfToken();
+  if (!tk) {
+    setTimeout(() => {
+      getPAccountData();
+    }, 10000);
+    return;
+  }
   token = tk
   const ck = await loginXiaozhu(curAccount.account, curAccount.password);
+  if (!ck) {
+    setTimeout(() => {
+      getPAccountData();
+    }, 10000);
+    return;
+  }
   cookie = ck;
   const videos = await getContent();
-  console.log(videos.length)
   PAccount[acIndex]['videos'] = videos
   if (acIndex === PAccount.length - 1) {
     outputExcel()
-    // outputJSON(PAccount);
   } else {
     acIndex++;
     setTimeout(() => {
