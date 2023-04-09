@@ -13,6 +13,8 @@ const { deleteVideos } = require('./src/mp-delete');
 const { reTpFileName } = require('./src/rename');
 const { moveFile } = require('./src/move');
 const { reImageSuffix } = require('./src/resuffix');
+const { getChild } = require('./src/get-child');
+const { getQuality } = require('./src/quality');
 
 axios.defaults.withCredentials = true
 const pwd = process.cwd(); // 当前执行程序的路径 同 path.resolve('./')
@@ -365,6 +367,12 @@ switch (mode) {
     break;
   case 'resuffix':
     reImageSuffix();
+    break;
+  case 'getchild':
+    getChild();
+    break;
+  case 'quality':
+    getQuality();
     break;
   default:
     printHelp()
