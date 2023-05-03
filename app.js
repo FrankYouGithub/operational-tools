@@ -15,6 +15,7 @@ const { moveFile } = require('./src/move');
 const { reImageSuffix } = require('./src/resuffix');
 const { getChild } = require('./src/get-child');
 const { getQuality } = require('./src/quality');
+const { getChildId } = require('./src/get-child-id');
 
 axios.defaults.withCredentials = true
 const pwd = process.cwd(); // 当前执行程序的路径 同 path.resolve('./')
@@ -373,6 +374,9 @@ switch (mode) {
     break;
   case 'quality':
     getQuality();
+    break;
+  case 'getChildId':
+    getChildId();
     break;
   default:
     printHelp()

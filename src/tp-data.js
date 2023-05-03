@@ -1,7 +1,7 @@
 /*
  * @Author       : frank
  * @Date         : 2022-10-05 22:11:48
- * @LastEditTime : 2023-01-17 13:22:44
+ * @LastEditTime : 2023-04-10 15:50:59
  * @LastEditors  : frank
  * @Description  : In User Settings Edit
  */
@@ -78,7 +78,7 @@ const getDatas = () => {
           quality: val[10] || '',
           publishTime,
           copyright: val[12],
-          category: val[6].split('：')[0]
+          category: val[12]
         })
         publishTimeMap.add(publishTime)
         if (i === excel.length - 1) {
