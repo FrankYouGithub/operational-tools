@@ -1,7 +1,7 @@
 /*
  * @Author       : frank
  * @Date         : 2022-10-05 22:11:48
- * @LastEditTime : 2023-06-22 23:41:05
+ * @LastEditTime : 2023-06-28 20:44:14
  * @LastEditors  : frank
  * @Description  : In User Settings Edit
  */
@@ -16,15 +16,6 @@ const open = require('child_process');
 
 
 let titleList = [];
-let begin, end;
-
-
-const getMatch = () => {
-  const excel = nodeXlsx.parse(path.join(pwd, 'match.xlsx'))	//读取excel表格
-  console.log(excel[0])
-  begin = excel[0].data[0][0]
-  end = excel[0].data[1][0]
-}
 
 // 获取当前文件夹下的所有 .mp4 文件的标题
 const getTitle = (src) => {
@@ -61,22 +52,23 @@ const getTitle = (src) => {
 
 const startReName = () => {
   titleList.forEach(item => {
-    if (item.type === 'mp4') {
-      fs.renameSync(item.oldPath, path.join(item.basePath, `${begin.trim()}${item.title}${end.trim()}.mp4`))
-    } else if (item.type === 'jpg') {
-      fs.renameSync(item.oldPath, path.join(item.basePath, `${begin.trim()}${item.title}.jpg`))
+    if (item.type === 'jpg' && item.title.lastIndexOf('【540×732】') > 0) {
+      fs.renameSync(item.oldPath, path.join(item.basePath, `${item.title.replace(/【540×732】/g, '2')}.jpg`))
+    } else if (item.type === 'jpg' && item.title.lastIndexOf('【1080×1920】') > 0) {
+      fs.renameSync(item.oldPath, path.join(item.basePath, `${item.title.replace(/【1080×1920】/g, '')}.jpg`))
+    } else if (item.type === 'jpg' && item.title.lastIndexOf('【720×1280】') > 0) {
+      fs.renameSync(item.oldPath, path.join(item.basePath, `${item.title.replace(/【720×1280】/g, '')}.jpg`))
     }
   })
 }
 
 
-const reTpFileName = async () => {
-  getMatch()
+const reImageSuffix2 = async () => {
   getTitle(pwd)
   startReName()
   console.log('修改名称成功')
 }
 
 module.exports = {
-  reTpFileName
+  reImageSuffix2
 }

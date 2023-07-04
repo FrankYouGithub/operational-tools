@@ -13,9 +13,11 @@ const { deleteVideos } = require('./src/mp-delete');
 const { reTpFileName } = require('./src/rename');
 const { moveFile } = require('./src/move');
 const { reImageSuffix } = require('./src/resuffix');
+const { reImageSuffix2 } = require('./src/resuffix2');
 const { getChild } = require('./src/get-child');
 const { getQuality } = require('./src/quality');
 const { getChildId } = require('./src/get-child-id');
+const { getChildActive } = require('./src/get-child-active');
 
 axios.defaults.withCredentials = true
 const pwd = process.cwd(); // 当前执行程序的路径 同 path.resolve('./')
@@ -369,6 +371,9 @@ switch (mode) {
   case 'resuffix':
     reImageSuffix();
     break;
+  case 'resuffix2':
+    reImageSuffix2();
+    break;
   case 'getchild':
     getChild();
     break;
@@ -377,6 +382,9 @@ switch (mode) {
     break;
   case 'getChildId':
     getChildId();
+    break;
+  case 'getChildActive':
+    getChildActive();
     break;
   default:
     printHelp()
